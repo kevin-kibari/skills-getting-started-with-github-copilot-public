@@ -5,13 +5,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const messageDiv = document.getElementById("message");
 
   // HTML escaping function for security
-  const escapeHtml = (text) => text.replace(/[&<>"']/g, char => ({
+  const escapeHtml = (text) => text ? text.replace(/[&<>"']/g, char => ({
     '&': '&amp;',
     '<': '&lt;',
     '>': '&gt;',
     '"': '&quot;',
     "'": '&#39;'
-  })[char]);
+  })[char]) : '';
 
   // Function to fetch activities from API
   async function fetchActivities() {
