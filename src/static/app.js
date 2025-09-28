@@ -13,6 +13,15 @@ document.addEventListener("DOMContentLoaded", () => {
       // Clear loading message
       activitiesList.innerHTML = "";
 
+      // HTML escaping function for security
+      const escapeHtml = (text) => text.replace(/[&<>"']/g, char => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+      })[char]);
+
       // Populate activities list
       Object.entries(activities).forEach(([name, details]) => {
         const activityCard = document.createElement("div");
@@ -23,11 +32,9 @@ document.addEventListener("DOMContentLoaded", () => {
         // Create participants list with proper HTML escaping
         let participantsList;
         if (details.participants.length > 0) {
-          const listItems = details.participants.map(email => {
-            const escapedEmail = document.createElement('div');
-            escapedEmail.textContent = email;
-            return `<li>${escapedEmail.innerHTML}</li>`;
-          }).join('');
+          const listItems = details.participants.map(email => 
+            `<li>${escapeHtml(email)}</li>`
+          ).join('');
           participantsList = `<ul>${listItems}</ul>`;
         } else {
           participantsList = '<p><em>No participants yet</em></p>';
