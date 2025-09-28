@@ -20,10 +20,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const spotsLeft = details.max_participants - details.participants.length;
         
-        // Create participants list
-        const participantsList = details.participants.length > 0 
-          ? `<ul>${details.participants.map(email => `<li>${email}</li>`).join('')}</ul>`
-          : '<p><em>No participants yet</em></p>';
+        // Create participants list with proper HTML escaping
+        let participantsList;
+        if (details.participants.length > 0) {
+          const listItems = details.participants.map(email => {
+            const escapedEmail = document.createElement('div');
+            escapedEmail.textContent = email;
+            return `<li>${escapedEmail.innerHTML}</li>`;
+          }).join('');
+          participantsList = `<ul>${listItems}</ul>`;
+        } else {
+          participantsList = '<p><em>No participants yet</em></p>';
+        }
 
         activityCard.innerHTML = `
           <h4>${name}</h4>
